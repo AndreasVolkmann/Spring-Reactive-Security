@@ -1,0 +1,8 @@
+dev:
+  amount: 5
+
+server:
+  compression:
+    enabled: true
+
+

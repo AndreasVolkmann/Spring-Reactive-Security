@@ -1,0 +1,20 @@
+POST localhost:8080/login
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+Content-Type: application/json
+
+{
+"status": [],
+"current": 1,
+"pageSize": 10
+}
+
+###
+
+POST localhost:8080/login
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+
+
+GET localhost:8080/login
+Authorization: Basic dXNlcjpwYXNzd29yZA==
+
+###
