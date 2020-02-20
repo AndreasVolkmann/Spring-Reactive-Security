@@ -1,4 +1,4 @@
-package com.example.demo
+package com.example.demo.config
 
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,7 +11,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 class SecurityConfigurationTests(
     @Autowired private val webTestClient: WebTestClient
 ) {
-
     private val loginUri = "/login"
     private val defaultPassword = "password"
     private val sessionCookieName = "SESSION"
@@ -36,7 +35,7 @@ class SecurityConfigurationTests(
     }
 
     @Test fun `logged out access to secure endpoint should return 401`() {
-        webTestClient.get().uri("/user").cookie(sessionCookieName, "invalid")
+        getUser("invalid")
             .exchange()
             .expectStatus().isUnauthorized
     }
@@ -44,12 +43,15 @@ class SecurityConfigurationTests(
     @Test fun `logged in can access secured endpoint`() {
         val result = postLogin().setFormLogin().exchange().expectBody().returnResult()
         val sessionCookie = result.responseCookies.getFirst(sessionCookieName)!!.value
-        webTestClient.get().uri("/user").cookie(sessionCookieName, sessionCookie)
+        getUser(sessionCookie)
             .exchange()
             .expectStatus().isOk
     }
 
     private fun postLogin() = webTestClient.post().uri(loginUri)
+
+    private fun getUser(sessionCookie: String) =
+        webTestClient.get().uri("/user").cookie(sessionCookieName, sessionCookie)
 
     private fun WebTestClient.RequestBodySpec.setFormLogin(password: String = defaultPassword) = this
         .contentType(MediaType.APPLICATION_FORM_URLENCODED)

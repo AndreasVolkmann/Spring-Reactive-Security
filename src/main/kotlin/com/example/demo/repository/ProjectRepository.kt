@@ -1,6 +1,6 @@
 package com.example.demo.repository
 
-import com.example.demo.configuration.DevConfiguration
+import com.example.demo.config.DevConfiguration
 import com.example.demo.model.Project
 import com.example.demo.model.ProjectFilter
 import com.example.demo.model.ProjectStatus
@@ -33,12 +33,12 @@ class ProjectRepository(
         val amount = devConfiguration.amount
         val statusValues = ProjectStatus.values()
         val faker = Faker()
-        val projects = (1..amount).map { i ->
-            val status = faker.random().nextInt(0, 2)
-            Project(i, faker.company().catchPhrase(), statusValues.first { it.ordinal == status })
+        val projects = (1..amount).map {
+            val status = faker.random().nextInt(0, statusValues.size - 1)
+            Project(null, faker.company().catchPhrase(), statusValues.first { it.ordinal == status })
         }
         operator.executeAndAwait {
-            client.execute("CREATE TABLE IF NOT EXISTS $table (id int PRIMARY KEY, name varchar, status varchar);")
+            client.execute("CREATE TABLE IF NOT EXISTS $table (id int auto_increment PRIMARY KEY, name varchar, status varchar);")
                 .await()
             projects.forEach { create(it) }
         }
