@@ -9,4 +9,7 @@ class Architecture {
 
     @Pointcut("execution (* (@org.springframework.stereotype.Service *).*(..))")
     fun repository() = Unit
+
+    @Pointcut("(@annotation(Activity) && execution(* *(..)))")
+    fun activity() = Unit
 }

@@ -12,7 +12,7 @@ class ActivityAspect {
 
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    @Around("(@annotation(Activity) && execution(* *(..))) || Architecture.repository() || Architecture.service()")
+    @Around("Architecture.activity() || Architecture.repository() || Architecture.service()")
     fun monitorActivity(proceedingJoinPoint: ProceedingJoinPoint): Any? {
         val name = proceedingJoinPoint.staticPart.signature.toShortString()
         var state = "SUCCESS"
