@@ -19,6 +19,6 @@ class DemoService {
     }
 
     fun test() {
-        //RowSetMetaDataImpl().getCatalogName(2)
+//        javax.sql.rowset.RowSetMetaDataImpl().getCatalogName(2)
     }
 }
